@@ -1,5 +1,4 @@
 require 'rspec'
-
 require_relative './questions'
 
 RSpec.configure do |config|
