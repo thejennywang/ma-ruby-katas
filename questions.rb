@@ -6,7 +6,7 @@ end
 
 # keep only the elements that start with a vowel
 def select_elements_starting_with_vowel(array)
-	array.select { |word| word.start_with?("a","e", "i", "o", "u") }
+	array.select { |word| word.match(/^[aeiou]/) }
 end
 
 # remove instances of nil (but NOT false) from an array
@@ -105,7 +105,8 @@ end
 # turn an array into itself repeated twice. So [1, 2, 3]
 # becomes [1, 2, 3, 1, 2, 3]
 def double_array(array)
-	[[array] << array].flatten
+	# [[array] << array].flatten
+	array * 2 # from Toan
 end
 
 # convert a symbol into a string
@@ -193,12 +194,14 @@ end
 # 'the lion the witch and the wardrobe' becomes
 # 'The Lion the Witch and the Wardrobe'
 def titleize_a_string(string)
+	string.capitalize.split.map {|word| word.match(/a\b|the\b|and\b/) ? word : word.capitalize }.join(" ")
 end
 
 # return true if a string contains any special characters
 # where 'special character' means anything apart from the letters
 # a-z (uppercase and lower) or numbers
 def check_a_string_for_special_characters(string)
+	
 end
 
 # get the upper limit of a range. e.g. for the range 1..20, you
