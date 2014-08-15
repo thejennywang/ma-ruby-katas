@@ -1,13 +1,16 @@
 # keep only the elements that start with an a
 def select_elements_starting_with_a(array)
+	array.select { |word| word.start_with?('a') }
 end
 
 # keep only the elements that start with a vowel
 def select_elements_starting_with_vowel(array)
+	array.select { |word| word.start_with?("a","e", "i", "o", "u") }
 end
 
 # remove instances of nil (but NOT false) from an array
 def remove_nils_from_array(array)
+	array.select { |element| element != nil }
 end
 
 # remove instances of nil AND false from an array
