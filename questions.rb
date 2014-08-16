@@ -6,6 +6,7 @@ end
 
 # keep only the elements that start with a vowel
 def select_elements_starting_with_vowel(array)
+	# array.select { |word| word.start_with?("a","e", "i", "o", "u") } # my first answer
 	array.select { |word| word.match(/^[aeiou]/) }
 end
 
@@ -68,7 +69,7 @@ end
 # even numbers come first
 # so [1, 2, 3, 4, 5, 6] becomes [[2, 4, 6], [1, 3, 5]]
 def separate_array_into_even_and_odd_numbers(array)
-	# [array.select { |n| n.even?}] << array.select {|n| n.odd? }
+	# [array.select { |n| n.even?}] << array.select {|n| n.odd? } # my first answer
 	array.partition { |n| n.even? }
 end
 
@@ -105,8 +106,8 @@ end
 # turn an array into itself repeated twice. So [1, 2, 3]
 # becomes [1, 2, 3, 1, 2, 3]
 def double_array(array)
-	# [[array] << array].flatten
-	array * 2 # from Toan
+	# [[array] << array].flatten # my first answer
+	array * 2 
 end
 
 # convert a symbol into a string
@@ -239,6 +240,8 @@ end
 # the list of bank holidays is here:
 # https://www.gov.uk/bank-holidays
 def is_a_2014_bank_holiday?(date)
+	bank_holidays = IO.readlines("holidays.ics").select{ |i| i[/\bDTSTART;VALUE=DATE:2014(\w+)/]}
+	bank_holidays.map {|string| string.match(date.strftime("%y%m%d"))}.any?
 end
 
 # given your birthday this year, this method tells you
