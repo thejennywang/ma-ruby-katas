@@ -251,7 +251,6 @@ def your_birthday_is_on_a_friday_in_the_year(birthday)
 	until birthday.friday? do
 		birthday = Time.new((birthday.year + 1), birthday.month, birthday.day)
 	end
-
 	birthday.year
 end
 
@@ -261,6 +260,9 @@ end
 # and 1 that is 4 letters long. Return it as a hash in the format
 # word_length => count, e.g. {2 => 1, 3 => 5, 4 => 1}
 def count_words_of_each_length_in_a_file(file_path)
+	word_lengths = IO.readlines('lorem.txt').join.split.map {|word| word[/(\w+)/].length }
+	word_lengths.map { |length| [length, word_lengths.select {|e| e == length}.count]}
+	# how can I extract this crazy long unreadable method?!
 end
 
 # implement fizzbuzz without modulo, i.e. the % method
