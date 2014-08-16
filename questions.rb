@@ -241,13 +241,18 @@ end
 # https://www.gov.uk/bank-holidays
 def is_a_2014_bank_holiday?(date)
 	bank_holidays = IO.readlines("holidays.ics").select{ |i| i[/\bDTSTART;VALUE=DATE:2014(\w+)/]}
-	bank_holidays.map {|string| string.match(date.strftime("%y%m%d"))}.any?
+	bank_holidays.map {|string| string.match(date.strftime("%Y%m%d"))}.any?
 end
 
 # given your birthday this year, this method tells you
 # the next year when your birthday will fall on a friday
 # e.g. january 1st, will next be a friday in 2016
 def your_birthday_is_on_a_friday_in_the_year(birthday)
+	until birthday.friday? do
+		birthday = Time.new((birthday.year + 1), birthday.month, birthday.day)
+	end
+
+	birthday.year
 end
 
 # in a file, total the number of times words of different lengths
