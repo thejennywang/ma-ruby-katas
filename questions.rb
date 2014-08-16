@@ -277,7 +277,7 @@ def fizzbuzz_without_modulo
 	end
 end
 
-puts fizzbuzz_without_modulo
+# puts fizzbuzz_without_modulo
 
 # print the lyrics of the song 99 bottles of beer on the wall
 # http://www.99-bottles-of-beer.net/lyrics.html
@@ -286,7 +286,14 @@ puts fizzbuzz_without_modulo
 # at the end.
 # (there's no RSpec test for this one)
 def ninety_nine_bottles_of_beer
-
+  (1..100).each do |number| 
+		puts "#{100 - number == 0 ? "No more" : 100 - number } #{100 - number == 1 ? "bottle" : "bottles" } of beer on the wall, #{100 - number == 0 ? "no more" : 100 - number } #{100 - number == 1 ? "bottle" : "bottles" } of beer."
+		if 99 - number >= 0
+			puts "Take one down and pass it around, #{99 - number == 0 ? "no more" : 99 - number } #{99 - number == 1 ? "bottle" : "bottles"} of beer on the wall."
+		else
+  		puts "Go to the store and buy some more, 99 bottles of beer on the wall."
+  	end
+  end
 end
 
-ninety_nine_bottles_of_beer
+# puts ninety_nine_bottles_of_beer
