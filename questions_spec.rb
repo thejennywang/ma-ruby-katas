@@ -1,6 +1,5 @@
-require 'rspec'
+# require 'rspec'
 require_relative './questions'
-require_relative './fizzbuzz_no_modulo'
 
 RSpec.configure do |config|
   config.color = true
@@ -65,11 +64,11 @@ describe 'the Friday test :)' do
   end
 
   specify 'make_numbers_negative' do
-    a = make_numbers_negative 5
-    b = make_numbers_negative -7
+    a = make_numbers_negative 1
+    b = make_numbers_negative -1
 
-    expect(a).to eq -5
-    expect(b).to eq -7
+    expect(a).to eq -1
+    expect(b).to eq -1
   end
 
   specify 'separate_array_into_even_and_odd_numbers' do
@@ -181,8 +180,8 @@ describe 'the Friday test :)' do
   end
 
   specify 'is_a_3_dot_range?' do
-    a = is_a_3_dot_range? 1..20
-    b = is_a_3_dot_range? 1...20
+    a = is_a_3_dot_range? 1..30
+    b = is_a_3_dot_range? 1...30
 
     expect(a).to be false
     expect(b).to be true

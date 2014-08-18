@@ -1,4 +1,3 @@
-
 # keep only the elements that start with an a
 def select_elements_starting_with_a(array)
 	array.select { |word| word.start_with?('a') }
@@ -7,7 +6,8 @@ end
 # keep only the elements that start with a vowel
 def select_elements_starting_with_vowel(array)
 	# array.select { |word| word.start_with?("a","e", "i", "o", "u") } # my first answer
-	array.select { |word| word.match(/^[aeiou]/) }
+	# array.select { |word| word.match(/^[aeiou]/) }
+	array.select {|w| w =~ /\A[aeiou]/i }
 end
 
 # remove instances of nil (but NOT false) from an array
@@ -17,13 +17,15 @@ end
 
 # remove instances of nil AND false from an array
 def remove_nils_and_false_from_array(array)
-	array.select { |element| element != nil && element != false }
+	# array.select { |element| element != nil && element != false }
+	array.reject(&:!) #alex's answer
 end
 
 # don't reverse the array, but reverse every word inside it. e.g.
 # ['dog', 'monkey'] becomes ['god', 'yeknom']
 def reverse_every_element_in_array(array)
-	array.map { |element| element.reverse }
+	# array.map { |element| element.reverse }
+	array.map(&:reverse) #alex's answer
 end
 
 # given an array of student names, like ['Bob', 'Dave', 'Clive']
@@ -31,7 +33,7 @@ end
 # [['Bob', 'Clive'], ['Bob', 'Dave'], ['Clive', 'Dave']]
 # make sure you don't have the same pairing twice, 
 def every_possible_pairing_of_students(array)
-	array.combination(2).to_a
+	array.combination(2)
 end
 
 # discard the first 3 elements of an array, 
@@ -55,13 +57,16 @@ end
 # 'banana' becomes 'ban'. If the string is an odd number of letters
 # round up - so 'apple' becomes 'app'
 def get_first_half_of_string(string)
-	string[0..(((string.length - 1)/2).round)]
+	# string[0..(((string.length - 1)/2).round)] # my original answer
+	letter_count = (string.length / 2.0 ).ceil
+	string[0, letter_count]
 end
 
 # turn a positive integer into a negative integer. A negative integer
 # stays negative
 def make_numbers_negative(number)
-	-((number <=> 0) * number)
+	# -((number <=> 0) * number) # my original answer
+	-number.abs
 end
 
 # turn an array of numbers into two arrays of numbers, one an array of 
@@ -70,7 +75,8 @@ end
 # so [1, 2, 3, 4, 5, 6] becomes [[2, 4, 6], [1, 3, 5]]
 def separate_array_into_even_and_odd_numbers(array)
 	# [array.select { |n| n.even?}] << array.select {|n| n.odd? } # my first answer
-	array.partition { |n| n.even? }
+	# array.partition { |n| n.even? }
+	array.partition(&:even?)
 end
 
 # count the numbers of elements in an element which are palindromes
@@ -83,24 +89,27 @@ end
 
 # return the shortest word in an array
 def shortest_word_in_array(array)
-	array.inject do |memo, word|
-		memo.length < word.length ? memo : word
-	end
+	# array.inject do |memo, word|
+	# 	memo.length < word.length ? memo : word
+	# end
+	array.min_by(&:length) # alex's answer
 end
 
 # return the longest word in an array
 def longest_word_in_array(array)
-	array.inject do |memo, word|
-		memo.length > word.length ? memo : word
-	end
+	# array.inject do |memo, word|
+	# 	memo.length > word.length ? memo : word
+	# end
+	array.max_by(&:length) # alex's answer
 end
 
 # add up all the numbers in an array, so [1, 3, 5, 6]
 # returns 15
 def total_of_array(array)
-	array.inject do |sum, number|
-		sum + number
-	end
+	# array.inject do |sum, number|
+	# 	sum + number
+	# end
+	array.inject(:+) # alex's answer
 end
 
 # turn an array into itself repeated twice. So [1, 2, 3]
@@ -133,8 +142,7 @@ end
 # pairing up elements. e.g. ['a', 'b', 'c', 'd'] becomes
 # {'a' => 'b', 'c' => 'd'}
 def convert_array_to_a_hash(array)
-	Hash[*array.flatten]
-	# how does the splat operator work? what's it for?
+	Hash[*array]
 end
 
 # get all the letters used in an array of words and return
@@ -186,7 +194,8 @@ end
 # get the domain name *without* the .com part, from an email address
 # so alex@makersacademy.com becomes makersacademy
 def get_domain_name_from_email_address(email)
-	email.match(/@(\w+)/)[1]
+	# email.match(/@(\w+)/)[1] # my original answer
+	email[/@(\w+)/, 1]
 end
 
 # capitalize the first letter in each word of a string, 
@@ -195,14 +204,18 @@ end
 # 'the lion the witch and the wardrobe' becomes
 # 'The Lion the Witch and the Wardrobe'
 def titleize_a_string(string)
-	string.capitalize.split.map {|word| word.match(/a\b|the\b|and\b/) ? word : word.capitalize }.join(" ")
-end
+	# string.capitalize.split.map {|word| word.match(/a\b|the\b|and\b/) ? word : word.capitalize }.join(" ") # my original answer
+	string.split.inject([]) { |words, w|
+		words << (%w(a and the).include?(w) && words.any? ? w : w.capitalize)
+		}.join(' ') #alex's answer
+	end
 
 # return true if a string contains any special characters
 # where 'special character' means anything apart from the letters
 # a-z (uppercase and lower) or numbers
 def check_a_string_for_special_characters(string)
 	/\W/ === string
+	# string =~ /\W/
 end
 
 # get the upper limit of a range. e.g. for the range 1..20, you
@@ -214,7 +227,8 @@ end
 # should return true for a 3 dot range like 1...20, false for a 
 # normal 2 dot range
 def is_a_3_dot_range?(range)
-	!range.include?(20)
+	!range.include?(range.last)
+	# range.exclude_end? # alex's answer
 end
 
 # get the square root of a number
@@ -224,7 +238,9 @@ end
 
 # count the number of words in a file
 def word_count_a_file(file_path)
-	IO.readlines(file_path).join.split.size
+	# simplify.. avoid IO.readlines
+	# IO.readlines(file_path).join.split.size
+	IO.read(file_path).split.size #new answer
 end
 
 # --- tougher ones ---
@@ -233,7 +249,8 @@ end
 # called call_method_from_string('foobar')
 # the method foobar should be invoked
 def call_method_from_string(str_method)
-	str_method()
+	# look at the send method 
+	send(str_method)
 end
 
 # return true if the date is a uk bank holiday for 2014
@@ -260,9 +277,10 @@ end
 # and 1 that is 4 letters long. Return it as a hash in the format
 # word_length => count, e.g. {2 => 1, 3 => 5, 4 => 1}
 def count_words_of_each_length_in_a_file(file_path)
-	word_lengths = IO.readlines('lorem.txt').join.split.map {|word| word[/(\w+)/].length }
-	word_lengths.map { |length| [length, word_lengths.select {|e| e == length}.count]}
-	# how can I extract this crazy long unreadable method?!
+	# word_lengths = IO.readlines('lorem.txt').join.split.map {|word| word[/(\w+)/].length }
+	# word_lengths.map {|length| [length, word_lengths.select {|e| e == length}.count]}
+	words, count = IO.read(file_path).scan(/\w+/), Hash.new(0)
+	words.each{|word| count[word.size] += 1 } and return count #alex's answer
 end
 
 # implement fizzbuzz without modulo, i.e. the % method
@@ -286,14 +304,14 @@ end
 # at the end.
 # (there's no RSpec test for this one)
 def ninety_nine_bottles_of_beer
-  (1..100).each do |number| 
-		puts "#{100 - number == 0 ? "No more" : 100 - number } #{100 - number == 1 ? "bottle" : "bottles" } of beer on the wall, #{100 - number == 0 ? "no more" : 100 - number } #{100 - number == 1 ? "bottle" : "bottles" } of beer."
-		if 99 - number >= 0
-			puts "Take one down and pass it around, #{99 - number == 0 ? "no more" : 99 - number } #{99 - number == 1 ? "bottle" : "bottles"} of beer on the wall."
+	99.downto(0) do |n| 
+		puts "#{n == 0 ? "No more" : n } #{n == 1 ? "bottle" : "bottles" } of beer on the wall, #{n == 0 ? "no more" : n } #{n == 1 ? "bottle" : "bottles" } of beer."
+		if n >= 1
+			puts "Take one down and pass it around, #{n - 1 == 0 ? "no more" : n - 1 } #{n - 1 == 1 ? "bottle" : "bottles"} of beer on the wall."
 		else
-  		puts "Go to the store and buy some more, 99 bottles of beer on the wall."
-  	end
-  end
+			puts "Go to the store and buy some more, 99 bottles of beer on the wall."
+		end
+	end
 end
 
 # puts ninety_nine_bottles_of_beer
